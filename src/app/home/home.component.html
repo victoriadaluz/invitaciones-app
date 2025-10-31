@@ -1,0 +1,57 @@
+<div class="home-container">
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      <h1>🎊 InvitApp</h1>
+    </div>
+    <div class="nav-actions">
+      <a routerLink="/login" class="btn btn-outline">Ingresar</a>
+      <a routerLink="/register" class="btn btn-primary">Crear Cuenta</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Crea invitaciones que <span class="highlight">impresionan</span></h1>
+      <p>Diseñá invitaciones virtuales únicas para cumpleaños, bodas, eventos y más. Fácil, rápido y hermoso.</p>
+      <div class="hero-actions">
+        <a routerLink="/register" class="btn btn-primary btn-large">Comenzar Ahora</a>
+        <a routerLink="/login" class="btn btn-secondary btn-large">Ya tengo cuenta</a>
+      </div>
+    </div>
+    <div class="hero-preview">
+      <div class="invitation-preview">
+        <div class="preview-card">
+          <div class="preview-header">
+            <h3>¡Estás invitado!</h3>
+          </div>
+          <div class="preview-body">
+            <p>Celebración de cumpleaños</p>
+            <p class="preview-date">Sábado 15 de Diciembre</p>
+            <button class="preview-btn">Confirmar Asistencia</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features">
+    <h2>¿Por qué elegir InvitApp?</h2>
+    <div class="features-grid">
+      <div class="feature-card" *ngFor="let feature of features">
+        <div class="feature-icon">{{ feature.icon }}</div>
+        <h3>{{ feature.title }}</h3>
+        <p>{{ feature.description }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <h2>¿Listo para crear tu primera invitación?</h2>
+    <p>Registrate gratis y empezá ahora mismo</p>
+    <a routerLink="/register" class="btn btn-primary btn-large">Crear Mi Invitación</a>
+  </section>
+</div>

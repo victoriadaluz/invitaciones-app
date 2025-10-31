@@ -1,20 +1,19 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
-
-//Todos los componentes deberían tener el standalone y estos imports
 @Component({
   selector: 'app-register',
-  standalone: true,  
-  imports: [CommonModule, ReactiveFormsModule, RouterModule], 
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent {
   registerForm: FormGroup;
+  loading = false;
 
   constructor(
     private fb: FormBuilder,
@@ -29,13 +28,22 @@ export class RegisterComponent {
     });
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (this.registerForm.valid && this.passwordsMatch()) {
-      const { confirmPassword, ...registerData } = this.registerForm.value;
-      this.authService.register(registerData).subscribe({
-        next: () => this.router.navigate(['/dashboard']),
-        error: (error) => console.error('Register error:', error)
-      });
+      this.loading = true;
+      
+      const formValue = this.registerForm.value;
+      const result = await this.authService.register(
+        formValue.email, 
+        formValue.password, 
+        formValue.displayName
+      );
+
+      this.loading = false;
+
+      if (!result.success) {
+        alert('Error: ' + result.error);
+      }
     }
   }
 

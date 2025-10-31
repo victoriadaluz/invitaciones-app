@@ -1,1 +1,32 @@
-<p>login works!</p>
+<div class="login-container">
+  <h2>Iniciar Sesión</h2>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label>Email:</label>
+      <input type="email" formControlName="email" placeholder="tu@email.com">
+      <div *ngIf="email?.invalid && email?.touched" class="error">
+        <div *ngIf="email?.errors?.['required']">Email es requerido</div>
+        <div *ngIf="email?.errors?.['email']">Email inválido</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Contraseña:</label>
+      <input type="password" formControlName="password" placeholder="Mínimo 6 caracteres">
+      <div *ngIf="password?.invalid && password?.touched" class="error">
+        <div *ngIf="password?.errors?.['required']">Contraseña requerida</div>
+        <div *ngIf="password?.errors?.['minlength']">Mínimo 6 caracteres</div>
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="loginForm.invalid || loading">
+      <span *ngIf="!loading">Ingresar</span>
+      <span *ngIf="loading">Cargando...</span>
+    </button>
+    
+    <div class="links">
+      <a routerLink="/forgot-password">¿Olvidaste tu contraseña?</a>
+      <a routerLink="/register">Crear cuenta nueva</a>
+    </div>
+  </form>
+</div>

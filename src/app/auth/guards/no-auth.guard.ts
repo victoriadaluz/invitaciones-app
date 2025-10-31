@@ -1,29 +1,19 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { Observable, map, take } from 'rxjs';
-import { AuthService } from '../services/auth.service';
+import { Auth } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NoAuthGuard implements CanActivate {
-  
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  private auth = inject(Auth);
+  private router = inject(Router);
 
-  canActivate(): Observable<boolean> {
-    return this.authService.isAuthenticated$.pipe(
-      take(1),
-      map(isAuthenticated => {
-        if (!isAuthenticated) {
-          return true;
-        } else {
-          this.router.navigate(['/dashboard']);
-          return false;
-        }
-      })
-    );
+  canActivate(): boolean {
+    if (!this.auth.currentUser) {
+      return true;
+    }
+    this.router.navigate(['/dashboard']);
+    return false;
   }
 }
