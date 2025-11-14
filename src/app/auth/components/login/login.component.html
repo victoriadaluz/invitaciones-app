@@ -1,32 +1,54 @@
 <div class="login-container">
-  <h2>Iniciar Sesión</h2>
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label>Email:</label>
-      <input type="email" formControlName="email" placeholder="tu@email.com">
-      <div *ngIf="email?.invalid && email?.touched" class="error">
-        <div *ngIf="email?.errors?.['required']">Email es requerido</div>
-        <div *ngIf="email?.errors?.['email']">Email inválido</div>
+  <div class="login-card">
+    <h2>Bienvenido de nuevo</h2>
+    <p class="subtitle">Ingresá a tu cuenta para continuar</p>
+    
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form" [class.loading]="loading">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input 
+          type="email" 
+          id="email"
+          formControlName="email" 
+          placeholder="tu@email.com"
+          [class.input-error]="email?.invalid && email?.touched"
+          [class.input-success]="email?.valid">
+        
+        <div *ngIf="email?.invalid && email?.touched" class="error">
+          <div *ngIf="email?.errors?.['required']">📧 El email es requerido</div>
+          <div *ngIf="email?.errors?.['email']">📧 Por favor ingresa un email válido</div>
+        </div>
       </div>
-    </div>
 
-    <div class="form-group">
-      <label>Contraseña:</label>
-      <input type="password" formControlName="password" placeholder="Mínimo 6 caracteres">
-      <div *ngIf="password?.invalid && password?.touched" class="error">
-        <div *ngIf="password?.errors?.['required']">Contraseña requerida</div>
-        <div *ngIf="password?.errors?.['minlength']">Mínimo 6 caracteres</div>
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input 
+          type="password" 
+          id="password"
+          formControlName="password" 
+          placeholder="Ingresá tu contraseña"
+          [class.input-error]="password?.invalid && password?.touched"
+          [class.input-success]="password?.valid">
+        
+        <div *ngIf="password?.invalid && password?.touched" class="error">
+          <div *ngIf="password?.errors?.['required']">🔒 La contraseña es requerida</div>
+          <div *ngIf="password?.errors?.['minlength']">🔒 Mínimo 6 caracteres</div>
+        </div>
       </div>
-    </div>
 
-    <button type="submit" [disabled]="loginForm.invalid || loading">
-      <span *ngIf="!loading">Ingresar</span>
-      <span *ngIf="loading">Cargando...</span>
-    </button>
+      <button 
+        type="submit" 
+        class="submit-btn"
+        [disabled]="loginForm.invalid || loading">
+        <span *ngIf="!loading">🎉 Ingresar</span>
+        <span *ngIf="loading">⏳ Cargando...</span>
+      </button>
+    </form>
     
     <div class="links">
-      <a routerLink="/forgot-password">¿Olvidaste tu contraseña?</a>
-      <a routerLink="/register">Crear cuenta nueva</a>
+      <a routerLink="/forgot-password">🔑 ¿Olvidaste tu contraseña?</a>
+      <a routerLink="/register">👤 ¿No tenés cuenta? Registrate</a>
+      <a routerLink="/">🏠 Volver al inicio</a>
     </div>
-  </form>
+  </div>
 </div>

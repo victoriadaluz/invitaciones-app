@@ -1,1 +1,40 @@
 /* You can add global styles to this file, and also import other style files */
+/* Importar fuentes de Google */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Variables globales */
+:root {
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --color-primary: #7b1fa2;
+  --color-primary-dark: #6a1b9a;
+  --color-text: #333;
+  --color-text-light: #666;
+  --color-background: #ffffff;
+  --color-error: #d32f2f;
+  --color-success: #2e7d32;
+}
+
+/* Reset y fuentes globales */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-primary);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--color-text);
+  background-color: var(--color-background);
+}
+
+/* Estilos globales para botones */
+button {
+  font-family: var(--font-primary);
+}
+
+/* Estilos globales para inputs */
+input, textarea, select {
+  font-family: var(--font-primary);
+}

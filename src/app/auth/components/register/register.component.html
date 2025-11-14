@@ -1,44 +1,83 @@
 <div class="register-container">
-  <h2>Crear Cuenta</h2>
-  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label>Nombre:</label>
-      <input type="text" formControlName="displayName" placeholder="Tu nombre">
-      <div *ngIf="registerForm.get('displayName')?.invalid && registerForm.get('displayName')?.touched">
-        Nombre requerido (mín. 2 caracteres)
+  <div class="register-card">
+    <h2>Creá tu cuenta</h2>
+    <p class="subtitle">Unite para crear invitaciones increíbles</p>
+    
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form" [class.loading]="loading">
+      <div class="form-group">
+        <label for="displayName">Nombre completo</label>
+        <input 
+          type="text" 
+          id="displayName"
+          formControlName="displayName" 
+          placeholder="Tu nombre"
+          [class.input-error]="displayName?.invalid && displayName?.touched"
+          [class.input-success]="displayName?.valid">
+        
+        <div *ngIf="displayName?.invalid && displayName?.touched" class="error">
+          <div *ngIf="displayName?.errors?.['required']">👤 El nombre es requerido</div>
+          <div *ngIf="displayName?.errors?.['minlength']">👤 Mínimo 2 caracteres</div>
+        </div>
       </div>
-    </div>
 
-    <div class="form-group">
-      <label>Email:</label>
-      <input type="email" formControlName="email" placeholder="tu@email.com">
-      <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
-        Email inválido
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input 
+          type="email" 
+          id="email"
+          formControlName="email" 
+          placeholder="tu@email.com"
+          [class.input-error]="email?.invalid && email?.touched"
+          [class.input-success]="email?.valid">
+        
+        <div *ngIf="email?.invalid && email?.touched" class="error">
+          <div *ngIf="email?.errors?.['required']">📧 El email es requerido</div>
+          <div *ngIf="email?.errors?.['email']">📧 Email inválido</div>
+        </div>
       </div>
-    </div>
 
-    <div class="form-group">
-      <label>Contraseña:</label>
-      <input type="password" formControlName="password" placeholder="Mínimo 6 caracteres">
-      <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
-        Contraseña requerida
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input 
+          type="password" 
+          id="password"
+          formControlName="password" 
+          placeholder="Mínimo 6 caracteres"
+          [class.input-error]="password?.invalid && password?.touched"
+          [class.input-success]="password?.valid">
+        
+        <div *ngIf="password?.invalid && password?.touched" class="error">
+          <div *ngIf="password?.errors?.['required']">🔒 Contraseña requerida</div>
+          <div *ngIf="password?.errors?.['minlength']">🔒 Mínimo 6 caracteres</div>
+        </div>
       </div>
-    </div>
 
-    <div class="form-group">
-      <label>Confirmar Contraseña:</label>
-      <input type="password" formControlName="confirmPassword" placeholder="Repite tu contraseña">
-      <div *ngIf="!passwordsMatch() && registerForm.get('confirmPassword')?.touched">
-        Las contraseñas no coinciden
+      <div class="form-group">
+        <label for="confirmPassword">Confirmar contraseña</label>
+        <input 
+          type="password" 
+          id="confirmPassword"
+          formControlName="confirmPassword" 
+          placeholder="Repetí tu contraseña"
+          [class.input-error]="!passwordsMatch() && confirmPassword?.touched">
+        
+        <div *ngIf="!passwordsMatch() && confirmPassword?.touched" class="password-mismatch">
+          🔒 Las contraseñas no coinciden
+        </div>
       </div>
-    </div>
 
-    <button type="submit" [disabled]="registerForm.invalid || !passwordsMatch()">
-      Crear Cuenta
-    </button>
+      <button 
+        type="submit" 
+        class="submit-btn"
+        [disabled]="registerForm.invalid || !passwordsMatch() || loading">
+        <span *ngIf="!loading">🎊 Crear cuenta</span>
+        <span *ngIf="loading">⏳ Creando cuenta...</span>
+      </button>
+    </form>
     
     <div class="links">
-      <a routerLink="/login">¿Ya tienes cuenta? Inicia sesión</a>
+      <a routerLink="/login">↶ ¿Ya tenés cuenta? Ingresá</a>
+      <a routerLink="/">🏠 Volver al inicio</a>
     </div>
-  </form>
+  </div>
 </div>

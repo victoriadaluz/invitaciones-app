@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
@@ -44,11 +44,19 @@ export class RegisterComponent {
       if (!result.success) {
         alert('Error: ' + result.error);
       }
+      // Si es success, el authService ya redirige a /dashboard
     }
   }
 
   passwordsMatch(): boolean {
-    return this.registerForm.get('password')?.value === 
-           this.registerForm.get('confirmPassword')?.value;
+    const password = this.registerForm?.get('password')?.value;
+    const confirmPassword = this.registerForm?.get('confirmPassword')?.value;
+    return password === confirmPassword;
   }
+
+  // Getters para acceder fácilmente a los controles
+  get displayName() { return this.registerForm.get('displayName'); }
+  get email() { return this.registerForm.get('email'); }
+  get password() { return this.registerForm.get('password'); }
+  get confirmPassword() { return this.registerForm.get('confirmPassword'); }
 }

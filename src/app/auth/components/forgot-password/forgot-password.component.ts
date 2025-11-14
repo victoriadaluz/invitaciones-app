@@ -44,4 +44,7 @@ export class ForgotPasswordComponent {
   backToLogin() {
     this.router.navigate(['/login']);
   }
+
+  // Getter para el email
+  get email() { return this.forgotForm.get('email'); }
 }
