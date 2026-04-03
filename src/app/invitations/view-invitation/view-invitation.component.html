@@ -1,1 +1,117 @@
-<p>view-invitation works!</p>
+<div
+  class="invitation-container"
+  [class]="'animation-' + (invitation?.animationStyle || 'none')"
+>
+
+  <ng-container *ngIf="invitation && invitation.backgroundImage">
+    <div class="background-overlay">
+      <div
+        class="background-image"
+        [style.background-image]="'url(' + invitation.backgroundImage + ')'"
+      ></div>
+      <div class="overlay"></div>
+    </div>
+  </ng-container>
+
+  <!-- Contenido principal -->
+  <div class="invitation-content" *ngIf="invitation; else loadingTemplate">
+    <!-- Header con título -->
+    <header class="invitation-header">
+      <h1 class="main-title">¡Estás invitado!</h1>
+      <div class="guest-of-honor">
+        <h2>{{ invitation.guestOfHonor }}</h2>
+        <p class="invitation-text">te invita a su {{ getEventTypeText() }}</p>
+      </div>
+    </header>
+
+    <!-- Countdown -->
+    <section class="countdown-section">
+      <h3>Faltan...</h3>
+      <div class="countdown-timer">
+        <div class="time-unit">
+          <span class="time-number">{{ daysRemaining }}</span>
+          <span class="time-label">días</span>
+        </div>
+        <div class="time-unit">
+          <span class="time-number">{{ hoursRemaining }}</span>
+          <span class="time-label">horas</span>
+        </div>
+        <div class="time-unit">
+          <span class="time-number">{{ minutesRemaining }}</span>
+          <span class="time-label">minutos</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Detalles del evento -->
+    <section class="event-details">
+      <div class="detail-card">
+        <div class="detail-icon">📅</div>
+        <div class="detail-content">
+          <h4>Cuándo</h4>
+          <p>{{ formatEventDate() }}</p>
+          <p class="event-time">{{ formatEventTime() }}</p>
+        </div>
+      </div>
+
+      <div class="detail-card" *ngIf="invitation.location">
+        <div class="detail-icon">📍</div>
+        <div class="detail-content">
+          <h4>Dónde</h4>
+          <p>{{ invitation.location }}</p>
+          <p class="event-address" *ngIf="invitation.address">
+            {{ invitation.address }}
+          </p>
+        </div>
+      </div>
+
+      <div class="detail-card" *ngIf="invitation.phoneNumber">
+        <div class="detail-icon">📞</div>
+        <div class="detail-content">
+          <h4>Confirmaciones</h4>
+          <p>{{ invitation.phoneNumber }}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Acciones -->
+    <section class="action-buttons">
+      <button class="btn btn-primary" (click)="shareInvitation()">
+        📤 Compartir Invitación
+      </button>
+      <button class="btn btn-secondary" *ngIf="invitation.phoneNumber">
+        ✅ Confirmar Asistencia
+      </button>
+    </section>
+  </div>
+
+  <!-- Template de carga -->
+  <ng-template #loadingTemplate>
+    <div class="loading-content">
+      <div class="loading-spinner">🎊</div>
+      <p>Cargando invitación...</p>
+    </div>
+  </ng-template>
+
+  <!-- Animaciones CSS -->
+  <div
+    class="animation-balloons"
+    *ngIf="invitation?.animationStyle === 'balloons'"
+  >
+    <div class="balloon balloon-1">🎈</div>
+    <div class="balloon balloon-2">🎈</div>
+    <div class="balloon balloon-3">🎈</div>
+    <div class="balloon balloon-4">🎈</div>
+  </div>
+
+  <div
+    class="animation-confetti"
+    *ngIf="invitation?.animationStyle === 'confetti'"
+  >
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+  </div>
+</div>

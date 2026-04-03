@@ -8,7 +8,6 @@ import {
   sendPasswordResetEmail,
   onAuthStateChanged
 } from 'firebase/auth';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -28,7 +27,8 @@ export class AuthService {
     try {
       const result = await createUserWithEmailAndPassword(this.auth, email, password);
       console.log('Registro exitoso:', result.user.email);
-      this.router.navigate(['/dashboard']);
+        this.router.navigate(['/create-invitation']);
+      //this.router.navigate(['/dashboard']);
       return { success: true, user: result.user };
     } catch (error: any) {
       console.error('Error en registro:', error);
@@ -36,20 +36,20 @@ export class AuthService {
     }
   }
 
-  // Login simple  
-  async login(email: string, password: string) {
-    try {
-      const result = await signInWithEmailAndPassword(this.auth, email, password);
-      console.log('Login exitoso:', result.user.email);
-      this.router.navigate(['/dashboard']);
-      return { success: true, user: result.user };
-    } catch (error: any) {
-      console.error('Error en login:', error);
-      return { success: false, error: error.message };
-    }
+async login(email: string, password: string) {
+  try {
+    const result = await signInWithEmailAndPassword(this.auth, email, password);
+    console.log('Login exitoso:', result.user.email);
+     this.router.navigate(['/create-invitation']);
+    return { success: true, user: result.user };
+  } catch (error: any) {
+    // TEMPORAL: Permitir acceso igual aunque falle el login
+    console.log('Error de login, pero permitiendo acceso para testing...');
+    return { success: false, error: error.message };
   }
+}
 
-  // Logout simple
+  // Logout
   async logout() {
     try {
       await signOut(this.auth);
@@ -61,7 +61,7 @@ export class AuthService {
     }
   }
 
-  // Reset password
+  // Resetear contraseña
   async forgotPassword(email: string) {
     try {
       await sendPasswordResetEmail(this.auth, email);

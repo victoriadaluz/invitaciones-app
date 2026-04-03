@@ -1,1 +1,191 @@
-<p>create-invitation works!</p>
+<div class="create-invitation-container">
+  <div class="form-card">
+    <h1>🎊 Creá tu invitación</h1>
+    <p class="subtitle">Diseñá una invitación única para tu evento especial</p>
+
+    <form
+      [formGroup]="invitationForm"
+      (ngSubmit)="onSubmit()"
+      class="invitation-form"
+    >
+      <!-- Nombre del Agasajado -->
+      <div class="form-group">
+        <label for="guestOfHonor">¿Quién celebra? *</label>
+        <input
+          type="text"
+          id="guestOfHonor"
+          formControlName="guestOfHonor"
+          placeholder="Ej: María, Juan"
+          class="form-input"
+          [class.input-error]="guestOfHonor?.invalid && guestOfHonor?.touched"
+        />
+
+        <div
+          *ngIf="guestOfHonor?.invalid && guestOfHonor?.touched"
+          class="error-message"
+        >
+          <div *ngIf="guestOfHonor?.errors?.['required']">
+            👤 El nombre es requerido
+          </div>
+          <div *ngIf="guestOfHonor?.errors?.['minlength']">
+            👤 Mínimo 2 caracteres
+          </div>
+        </div>
+      </div>
+
+      <!-- Tipo de Evento -->
+      <div class="form-group">
+        <label for="eventType">Tipo de evento *</label>
+        <select id="eventType" formControlName="eventType" class="form-select">
+          <option *ngFor="let type of eventTypes" [value]="type.value">
+            {{ type.label }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Fecha y Hora -->
+      <div class="form-group">
+        <label for="eventDate">Fecha del evento *</label>
+        <input
+          type="date"
+          id="eventDate"
+          formControlName="eventDate"
+          class="form-input"
+          [class.input-error]="eventDate?.invalid && eventDate?.touched"
+        />
+
+        <div
+          *ngIf="eventDate?.invalid && eventDate?.touched"
+          class="error-message"
+        >
+          📅 La fecha es requerida
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="startTime">Hora de inicio *</label>
+          <select
+            id="startTime"
+            formControlName="startTime"
+            class="form-select"
+          >
+            <option *ngFor="let time of timeSlots" [value]="time">
+              {{ time }} hs
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="endTime">Hora de finalización *</label>
+          <select
+            id="endTime"
+            formControlName="endTime"
+            class="form-select"
+            [class.input-error]="!validateTimeRange() && endTime?.touched"
+          >
+            <option *ngFor="let time of timeSlots" [value]="time">
+              {{ time }} hs
+            </option>
+          </select>
+
+          <div
+            *ngIf="!validateTimeRange() && endTime?.touched"
+            class="error-message"
+          >
+            ⏰ La hora de fin debe ser después de la de inicio
+          </div>
+        </div>
+      </div>
+
+      <!-- Ubicación -->
+      <div class="form-group">
+        <label for="location">Nombre del lugar/Salón</label>
+        <input
+          type="text"
+          id="location"
+          formControlName="location"
+          placeholder="Ej: Salón Primavera, Mi casa..."
+          class="form-input"
+        />
+      </div>
+
+      <!-- Dirección -->
+      <div class="form-group">
+        <label for="address">Dirección (para el mapa)</label>
+        <input
+          type="text"
+          id="address"
+          formControlName="address"
+          placeholder="Ej: Avenida Hipólito Yrigoyen 1339, CABA"
+          class="form-input"
+        />
+      </div>
+
+      <!-- Teléfono -->
+      <div class="form-group">
+        <label for="phoneNumber">Teléfono para confirmaciones</label>
+        <input
+          type="tel"
+          id="phoneNumber"
+          formControlName="phoneNumber"
+          placeholder="+54 11 1234-5678"
+          class="form-input"
+        />
+      </div>
+
+      <!-- Imagen de fondo -->
+      <div class="form-group">
+        <label for="backgroundImage">Imagen de fondo</label>
+        <div class="file-upload">
+          <input
+            type="file"
+            id="backgroundImage"
+            (change)="onFileSelected($event)"
+            accept="image/*"
+            class="file-input"
+          />
+          <label for="backgroundImage" class="file-label">
+            <span class="file-icon">📷</span>
+            <span class="file-text">Elegí una imagen</span>
+          </label>
+        </div>
+        <p class="file-hint">
+          Recomendado: imagen horizontal para mejor visualización
+        </p>
+      </div>
+
+      <!-- Estilo de Animación -->
+      <div class="form-group">
+        <label for="animationStyle">Estilo de animación</label>
+        <div class="animation-options">
+          <label *ngFor="let style of animationStyles" class="animation-option">
+            <input
+              type="radio"
+              formControlName="animationStyle"
+              [value]="style.value"
+            />
+            <span class="animation-preview">{{ style.label }}</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Botón de envío -->
+      <button
+        type="submit"
+        class="submit-btn"
+        [disabled]="invitationForm.invalid || !validateTimeRange()"
+      >
+        <span class="btn-icon">✨</span>
+        Crear Invitación
+      </button>
+    </form>
+
+    <div class="preview-note">
+      <p>
+        💡 <strong>Preview:</strong> Después de crear tu invitación, podés ver
+        cómo queda y compartirla con tus invitados.
+      </p>
+    </div>
+  </div>
+</div>

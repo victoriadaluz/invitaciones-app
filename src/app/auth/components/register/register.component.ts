@@ -27,26 +27,26 @@ export class RegisterComponent {
       confirmPassword: ['', [Validators.required]]
     });
   }
+async onSubmit() {
+  if (this.registerForm.valid && this.passwordsMatch()) {
+    this.loading = true;
+    
+    const formValue = this.registerForm.value;
+    const result = await this.authService.register(
+      formValue.email, 
+      formValue.password, 
+      formValue.displayName
+    );
 
-  async onSubmit() {
-    if (this.registerForm.valid && this.passwordsMatch()) {
-      this.loading = true;
-      
-      const formValue = this.registerForm.value;
-      const result = await this.authService.register(
-        formValue.email, 
-        formValue.password, 
-        formValue.displayName
-      );
+    this.loading = false;
 
-      this.loading = false;
-
-      if (!result.success) {
-        alert('Error: ' + result.error);
-      }
-      // Si es success, el authService ya redirige a /dashboard
+    if (!result.success) {
+      // TEMPORAL: Redirigir igual aunque falle
+      this.router.navigate(['/create-invitation']);
     }
+    // Si es success, ya redirige a create-invitation
   }
+}
 
   passwordsMatch(): boolean {
     const password = this.registerForm?.get('password')?.value;

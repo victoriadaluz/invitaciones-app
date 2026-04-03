@@ -1,57 +1,136 @@
-<div class="home-container">
-  <!-- Navbar -->
-  <nav class="navbar">
-    <div class="nav-brand">
-      <h1>🎊 InvitApp</h1>
-    </div>
-    <div class="nav-actions">
-      <a routerLink="/login" class="btn btn-outline">Ingresar</a>
-      <a routerLink="/register" class="btn btn-primary">Crear Cuenta</a>
-    </div>
-  </nav>
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="hero-content">
-      <h1>Crea invitaciones que <span class="highlight">impresionan</span></h1>
-      <p>Diseñá invitaciones virtuales únicas para cumpleaños, bodas, eventos y más. Fácil, rápido y hermoso.</p>
-      <div class="hero-actions">
-        <a routerLink="/register" class="btn btn-primary btn-large">Comenzar Ahora</a>
-        <a routerLink="/login" class="btn btn-secondary btn-large">Ya tengo cuenta</a>
+<a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-off-white p-2 rounded-md shadow-md z-50 focus:ring-2 focus:ring-rose-powder">
+  Saltar al contenido principal
+</a>
+
+<header class="sticky top-0 z-40 bg-off-white/95 backdrop-blur-sm border-b border-gray-light">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+            <div class="flex-shrink-0">
+        <h1 class="text-2xl font-bold text-rose-powder">🎊 InvitApp</h1>
       </div>
+
+  
+      <nav aria-label="Principal" class="flex gap-3 sm:gap-4">
+        <a routerLink="/login" 
+           class="px-4 py-2 text-gray-mid hover:text-gray-dark font-medium rounded-md hover:bg-gray-soft transition focus:outline-none focus:ring-2 focus:ring-rose-powder">
+          Ingresar
+        </a>
+        <a routerLink="/register" 
+           class="px-4 py-2 bg-rose-powder text-white font-medium rounded-md hover:bg-rose-powder/85 transition focus:outline-none focus:ring-2 focus:ring-rose-powder focus:ring-offset-2">
+          Crear Cuenta
+        </a>
+      </nav>
     </div>
-    <div class="hero-preview">
-      <div class="invitation-preview">
-        <div class="preview-card">
-          <div class="preview-header">
-            <h3>¡Estás invitado!</h3>
+  </div>
+</header>
+
+
+<main id="main-content" class="overflow-x-hidden">
+
+  <section class="relative overflow-hidden bg-gradient-to-br from-off-white via-white to-gray-soft/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+      
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        
+
+        <article class="space-y-6 text-center md:text-left">
+          <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-gray-dark">
+            Crea invitaciones que 
+            <span class="text-sky-soft">inspiran</span>
+          </h1>
+          <p class="text-lg sm:text-xl text-gray-mid max-w-2xl mx-auto md:mx-0">
+            Diseñá invitaciones virtuales únicas para cumpleaños, bodas, eventos y más. Fácil, rápido y hermoso.
+          </p>
+          <div class="flex flex-wrap gap-4 justify-center md:justify-start">
+            <a routerLink="/register" 
+               class="px-6 py-3 bg-mint text-gray-dark font-semibold rounded-lg hover:bg-mint/85 transition focus:outline-none focus:ring-2 focus:ring-mint">
+              Comenzar Ahora
+            </a>
+            <a routerLink="/login" 
+               class="px-6 py-3 border border-gray-light text-gray-mid font-semibold rounded-lg hover:bg-gray-soft transition focus:outline-none focus:ring-2 focus:ring-rose-powder">
+              Ya tengo cuenta
+            </a>
+            <a routerLink="/create-invitation" 
+               class="px-6 py-3 bg-warm-yellow text-gray-dark font-semibold rounded-lg hover:bg-warm-yellow/85 transition focus:outline-none focus:ring-2 focus:ring-warm-yellow">
+              🚀 Probar (Testing)
+            </a>
           </div>
-          <div class="preview-body">
-            <p>Celebración de cumpleaños</p>
-            <p class="preview-date">Sábado 15 de Diciembre</p>
-            <button class="preview-btn">Confirmar Asistencia</button>
+        </article>
+->
+        <aside class="flex justify-center" aria-label="Vista previa de invitación">
+          <div class="bg-gradient-to-br from-rose-powder/20 to-sky-soft/20 p-6 rounded-2xl shadow-xl transform rotate-2 hover:rotate-0 transition duration-300 max-w-sm">
+            <div class="bg-white/80 backdrop-blur-sm rounded-xl p-6 text-center">
+              <h2 class="text-2xl font-bold text-gray-dark mb-2">✨ ¡Estás invitado!</h2>
+              <div class="space-y-2 mt-4">
+                <p class="text-gray-mid">Celebración de cumpleaños</p>
+                <p class="text-3xl">🎂</p>
+                <p class="text-gray-dark font-medium">Sábado 15 de Diciembre</p>
+                <p class="text-gray-mid text-sm">20:00 hs</p>
+                <button class="mt-4 bg-mint text-gray-dark px-4 py-2 rounded-full font-semibold text-sm hover:bg-mint/85 transition">
+                  Confirmar Asistencia
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
+        </aside>
       </div>
     </div>
   </section>
 
-  <!-- Features Section -->
-  <section class="features">
-    <h2>¿Por qué elegir InvitApp?</h2>
-    <div class="features-grid">
-      <div class="feature-card" *ngFor="let feature of features">
-        <div class="feature-icon">{{ feature.icon }}</div>
-        <h3>{{ feature.title }}</h3>
-        <p>{{ feature.description }}</p>
+  <section class="bg-gray-soft py-16 md:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <header class="text-center mb-12 md:mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-dark mb-4">
+          ¿Por qué elegir InvitApp?
+        </h2>
+        <p class="text-lg text-gray-mid max-w-2xl mx-auto">
+          Todo lo que necesitás para crear invitaciones inolvidables
+        </p>
+      </header>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        
+        <article class="bg-off-white p-6 rounded-xl shadow-sm hover:shadow-md transition text-center group border border-gray-light">
+          <div class="text-5xl mb-4 group-hover:scale-110 transition">🎉</div>
+          <h3 class="text-xl font-semibold text-gray-dark mb-2">Invitaciones Únicas</h3>
+          <p class="text-gray-mid">Personalizá cada detalle para tu evento especial con fondos y animaciones exclusivas.</p>
+        </article>
+
+        <article class="bg-off-white p-6 rounded-xl shadow-sm hover:shadow-md transition text-center group border border-gray-light">
+          <div class="text-5xl mb-4 group-hover:scale-110 transition">📱</div>
+          <h3 class="text-xl font-semibold text-gray-dark mb-2">Compartí Fácil</h3>
+          <p class="text-gray-mid">Enviala por WhatsApp, email o redes sociales. Tus invitados la recibirán al instante.</p>
+        </article>
+
+        <article class="bg-off-white p-6 rounded-xl shadow-sm hover:shadow-md transition text-center group border border-gray-light">
+          <div class="text-5xl mb-4 group-hover:scale-110 transition">✅</div>
+          <h3 class="text-xl font-semibold text-gray-dark mb-2">Confirmaciones</h3>
+          <p class="text-gray-mid">Seguí quiénes confirmaron asistencia y gestioná tu evento desde un solo lugar.</p>
+        </article>
       </div>
     </div>
   </section>
 
-  <!-- CTA Section -->
-  <section class="cta">
-    <h2>¿Listo para crear tu primera invitación?</h2>
-    <p>Registrate gratis y empezá ahora mismo</p>
-    <a routerLink="/register" class="btn btn-primary btn-large">Crear Mi Invitación</a>
+  <section class="bg-sky-soft/20 py-16 md:py-20 text-center">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-dark mb-4">
+        ¿Listo para crear tu primera invitación?
+      </h2>
+      <p class="text-xl text-gray-mid mb-8">
+        Registrate gratis y empezá ahora mismo
+      </p>
+      <a routerLink="/register" 
+         class="inline-block bg-rose-powder text-white font-semibold px-8 py-3 rounded-lg hover:bg-rose-powder/85 transition focus:outline-none focus:ring-2 focus:ring-rose-powder">
+        Crear Mi Invitación
+      </a>
+    </div>
   </section>
-</div>
+
+</main>
+
+<!-- Footer -->
+<footer class="bg-gray-dark text-gray-light py-8 text-center text-sm">
+  <p>&copy; 2026 InvitApp - Todos los derechos reservados</p>
+</footer>

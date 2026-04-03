@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
@@ -8,7 +13,7 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './create-invitation.component.html',
-  styleUrls: ['./create-invitation.component.scss']
+  styleUrls: ['./create-invitation.component.scss'],
 })
 export class CreateInvitationComponent {
   invitationForm: FormGroup;
@@ -18,20 +23,20 @@ export class CreateInvitationComponent {
     { value: 'baby_shower', label: '👶 Baby Shower' },
     { value: 'graduation', label: '🎓 Graduación' },
     { value: 'anniversary', label: '💑 Aniversario' },
-    { value: 'other', label: '🎉 Otro evento' }
+    { value: 'other', label: '🎉 Otro evento' },
   ];
-  
+
   animationStyles = [
     { value: 'balloons', label: '🎈 Globos' },
     { value: 'confetti', label: '🎊 Confetti' },
     { value: 'sparkles', label: '✨ Brillitos' },
-    { value: 'none', label: 'Sin animación' }
+    { value: 'none', label: 'Sin animación' },
   ];
 
-  constructor(
-    private fb: FormBuilder,
-    private router: Router
-  ) {
+  // Horas disponibles cada 15 minutos
+  timeSlots = this.generateTimeSlots();
+
+  constructor(private fb: FormBuilder, private router: Router) {
     this.invitationForm = this.createForm();
   }
 
@@ -40,19 +45,33 @@ export class CreateInvitationComponent {
       guestOfHonor: ['', [Validators.required, Validators.minLength(2)]],
       eventType: ['birthday', [Validators.required]],
       eventDate: ['', [Validators.required]],
-      eventTime: ['19:00', [Validators.required]],
+      startTime: ['19:00', [Validators.required]], // ← Cambiado
+      endTime: ['23:00', [Validators.required]],
       location: [''],
       address: [''],
       phoneNumber: [''],
       backgroundImage: [null],
-      animationStyle: ['balloons']
+      animationStyle: ['balloons'],
     });
+  }
+
+  // Generar horarios cada 15 minutos
+  private generateTimeSlots(): string[] {
+    const slots = [];
+    for (let hour = 0; hour < 24; hour++) {
+      for (let minute = 0; minute < 60; minute += 15) {
+        const timeString = `${hour.toString().padStart(2, '0')}:${minute
+          .toString()
+          .padStart(2, '0')}`;
+        slots.push(timeString);
+      }
+    }
+    return slots;
   }
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
-      // Procesamiento de imagen
       console.log('Imagen seleccionada:', file.name);
       this.invitationForm.patchValue({ backgroundImage: file });
     }
@@ -60,16 +79,32 @@ export class CreateInvitationComponent {
 
   onSubmit() {
     if (this.invitationForm.valid) {
-      // Aquí guardaremos la invitación en Firebase después
       console.log('Invitación creada:', this.invitationForm.value);
-      
-      // TEMPORAL: Redirige a vista de invitación
       this.router.navigate(['/invitation/preview']);
     }
   }
 
+  // Validar que la hora de fin sea después de la de inicio
+  validateTimeRange(): boolean {
+    const startTime = this.invitationForm.get('startTime')?.value;
+    const endTime = this.invitationForm.get('endTime')?.value;
+    return startTime && endTime && startTime < endTime;
+  }
+
   // Getters para los controles
-  get guestOfHonor() { return this.invitationForm.get('guestOfHonor'); }
-  get eventType() { return this.invitationForm.get('eventType'); }
-  get eventDate() { return this.invitationForm.get('eventDate'); }
+  get guestOfHonor() {
+    return this.invitationForm.get('guestOfHonor');
+  }
+  get eventType() {
+    return this.invitationForm.get('eventType');
+  }
+  get eventDate() {
+    return this.invitationForm.get('eventDate');
+  }
+  get startTime() {
+    return this.invitationForm.get('startTime');
+  }
+  get endTime() {
+    return this.invitationForm.get('endTime');
+  }
 }

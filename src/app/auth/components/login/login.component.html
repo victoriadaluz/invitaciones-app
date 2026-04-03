@@ -1,54 +1,73 @@
-<div class="login-container">
-  <div class="login-card">
-    <h2>Bienvenido de nuevo</h2>
-    <p class="subtitle">Ingresá a tu cuenta para continuar</p>
+<main class="min-h-screen bg-gradient-to-br from-rosa/20 to-cielo/20 flex items-center justify-center px-4">
+  <article class="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
     
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form" [class.loading]="loading">
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input 
-          type="email" 
+    <!-- Encabezado -->
+    <header class="text-center mb-8">
+      <h1 class="text-3xl font-bold text-gray-800">Bienvenido de nuevo</h1>
+      <p class="text-gray-600 mt-2">Ingresá a tu cuenta para continuar</p>
+    </header>
+
+    <!-- Formulario -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      
+      <!-- Campo Email -->
+      <div class="space-y-2">
+        <label for="email" class="block font-medium text-gray-700">Email</label>
+        <input
           id="email"
-          formControlName="email" 
+          type="email"
+          formControlName="email"
           placeholder="tu@email.com"
-          [class.input-error]="email?.invalid && email?.touched"
-          [class.input-success]="email?.valid">
-        
-        <div *ngIf="email?.invalid && email?.touched" class="error">
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rosa focus:border-transparent transition"
+          [class.border-red-500]="email?.invalid && email?.touched"
+        />
+        <div *ngIf="email?.invalid && email?.touched" class="text-sm text-rojo">
           <div *ngIf="email?.errors?.['required']">📧 El email es requerido</div>
-          <div *ngIf="email?.errors?.['email']">📧 Por favor ingresa un email válido</div>
+          <div *ngIf="email?.errors?.['email']">📧 Email inválido</div>
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="password">Contraseña</label>
-        <input 
-          type="password" 
+      <!-- Campo Contraseña -->
+      <div class="space-y-2">
+        <label for="password" class="block font-medium text-gray-700">Contraseña</label>
+        <input
           id="password"
-          formControlName="password" 
-          placeholder="Ingresá tu contraseña"
-          [class.input-error]="password?.invalid && password?.touched"
-          [class.input-success]="password?.valid">
-        
-        <div *ngIf="password?.invalid && password?.touched" class="error">
+          type="password"
+          formControlName="password"
+          placeholder="••••••"
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rosa focus:border-transparent transition"
+          [class.border-red-500]="password?.invalid && password?.touched"
+        />
+        <div *ngIf="password?.invalid && password?.touched" class="text-sm text-rojo">
           <div *ngIf="password?.errors?.['required']">🔒 La contraseña es requerida</div>
           <div *ngIf="password?.errors?.['minlength']">🔒 Mínimo 6 caracteres</div>
         </div>
       </div>
 
-      <button 
-        type="submit" 
-        class="submit-btn"
-        [disabled]="loginForm.invalid || loading">
+      <!-- Botón de envío -->
+      <button
+        type="submit"
+        class="w-full bg-rosa text-white font-semibold py-2 rounded-lg hover:bg-rosa/90 transition disabled:opacity-50 disabled:cursor-not-allowed focus:ring-2 focus:ring-rosa focus:ring-offset-2"
+        [disabled]="loginForm.invalid || loading"
+      >
         <span *ngIf="!loading">🎉 Ingresar</span>
         <span *ngIf="loading">⏳ Cargando...</span>
       </button>
+
     </form>
-    
-    <div class="links">
-      <a routerLink="/forgot-password">🔑 ¿Olvidaste tu contraseña?</a>
-      <a routerLink="/register">👤 ¿No tenés cuenta? Registrate</a>
-      <a routerLink="/">🏠 Volver al inicio</a>
-    </div>
-  </div>
-</div>
+
+    <!-- Enlaces de ayuda -->
+    <footer class="mt-8 text-center space-y-2">
+      <a routerLink="/forgot-password" class="block text-sm text-cielo hover:underline focus:outline-none focus:ring-2 focus:ring-rosa rounded">
+        🔑 ¿Olvidaste tu contraseña?
+      </a>
+      <a routerLink="/register" class="block text-sm text-verde-esmeralda hover:underline focus:outline-none focus:ring-2 focus:ring-rosa rounded">
+        👤 ¿No tenés cuenta? Registrate
+      </a>
+      <a routerLink="/" class="block text-sm text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-rosa rounded">
+        🏠 Volver al inicio
+      </a>
+    </footer>
+
+  </article>
+</main>
