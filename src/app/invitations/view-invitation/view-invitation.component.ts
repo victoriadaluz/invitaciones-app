@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { InvitationService } from '../../auth/services/invitation.service';
 
 // Interfaces
 import { Invitation, EventType, AnimationStyle } from '../interfaces/invitation.interface';
@@ -19,30 +20,22 @@ export class ViewInvitationComponent implements OnInit, OnDestroy {
   minutesRemaining: number = 0;
   private countdownInterval: any;
 
-  // Datos de ejemplo TEMPORALES (posteriormente vendrían de firebase)
-  private sampleInvitation: Invitation = {
-    id: '1',
-    hostId: 'user123',
-    guestOfHonor: 'María González',
-    eventType: EventType.BIRTHDAY,
-    eventDate: new Date('2024-12-25T20:00:00'), // Fecha futura para probar countdown
-    location: 'Salón Primavera',
-    address: 'Av. Siempre Viva 123, CABA',
-    phoneNumber: '+54 11 1234-5678',
-    backgroundImage: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80',
-    animationStyle: AnimationStyle.CONFETTI,
-    createdAt: new Date(),
-    shareableLink: 'http://localhost:4200/invitation/1'
-  };
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute,
+    private invitationService: InvitationService
+  ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     // TEMPORAL: datos de ejemplo
-    this.invitation = this.sampleInvitation;
-    
-    // Iniciar cuenta regresiva
-    this.startCountdown();
+     const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.invitation = await this.invitationService.getInvitationById(id);
+      if (this.invitation) {
+        this.startCountdown();
+      } else {
+        console.error('Invitación no encontrada');
+      }
+    }
   }
 
   ngOnDestroy() {
@@ -117,8 +110,8 @@ formatEventTime(): string {
 
 shareInvitation() {
   if (!this.invitation) return;
-  
-  navigator.clipboard.writeText(this.invitation.shareableLink);
+  const link = this.invitation.shareableLink || window.location.href;
+  navigator.clipboard.writeText(link);
   alert('¡Link copiado al portapapeles! 🎉');
 }
 }

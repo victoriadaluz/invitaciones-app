@@ -1,16 +1,18 @@
 export interface Invitation {
-  id?: string;
-  hostId: string;           // ID del usuario creador
-  guestOfHonor: string;     // Nombre del agasajado
-  eventType: EventType;     // Tipo de evento
-  eventDate: Date;          // Fecha y hora
-  location?: string;        // Ubicación/salón
-  address?: string;         // Dirección para el mapa
-  phoneNumber?: string;     // Teléfono para confirmaciones
-  backgroundImage?: string; // URL de la imagen subida
-  animationStyle: AnimationStyle; // Estilo de animación
+  id?: string; // ID único de Firestore
+  hostId: string; // UID del usuario creador
+  guestOfHonor: string;
+  eventType: EventType;
+  eventDate: Date;
+  startTime: string;
+  endTime: string;
+  location?: string;
+  address?: string;
+  phoneNumber?: string;
+  backgroundImageUrl: string; // URL de Firebase
+  animationStyle: AnimationStyle;
   createdAt: Date;
-  shareableLink: string;    // Link único para compartir
+  shareableLink?: string;
 }
 
 export enum EventType {
@@ -19,12 +21,12 @@ export enum EventType {
   BABY_SHOWER = 'baby_shower',
   GRADUATION = 'graduation',
   ANNIVERSARY = 'anniversary',
-  OTHER = 'other'
+  OTHER = 'other',
 }
 
 export enum AnimationStyle {
   BALLOONS = 'balloons',
   CONFETTI = 'confetti',
   SPARKLES = 'sparkles',
-  NONE = 'none'
+  NONE = 'none',
 }

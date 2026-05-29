@@ -1,117 +1,119 @@
-<div
-  class="invitation-container"
-  [class]="'animation-' + (invitation?.animationStyle || 'none')"
->
+<div class="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/5 py-12 px-4">
+  
+  <!-- Tarjeta principal -->
+  <article class="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden relative">
+    
+    <!-- Fondo con imagen (si existe) -->
+    <div *ngIf="invitation && invitation.backgroundImageUrl" 
+     class="relative h-48 md:h-64 bg-cover bg-center" 
+     [style.backgroundImage]="'url(' + invitation.backgroundImageUrl + ')'">
+  <div class="absolute inset-0 bg-black/40"></div>
+</div>
 
-  <ng-container *ngIf="invitation && invitation.backgroundImage">
-    <div class="background-overlay">
-      <div
-        class="background-image"
-        [style.background-image]="'url(' + invitation.backgroundImage + ')'"
-      ></div>
-      <div class="overlay"></div>
+    <!-- Contenido -->
+    <div class="p-6 md:p-8 space-y-8">
+      
+      <!-- Encabezado -->
+      <header class="text-center space-y-2">
+        <h1 class="text-3xl md:text-4xl font-bold text-primary">✨ ¡Estás invitado!</h1>
+        <div class="space-y-1">
+          <h2 class="text-2xl md:text-3xl font-bold text-dark">{{ invitation?.guestOfHonor }}</h2>
+          <p class="text-lg text-gray">te invita a su {{ getEventTypeText() }}</p>
+        </div>
+      </header>
+
+      <!-- Countdown -->
+      <section class="bg-light rounded-xl p-6 text-center space-y-4">
+        <h3 class="text-xl font-semibold text-dark">🎈 Faltan...</h3>
+        <div class="flex justify-center gap-4 md:gap-8">
+          <div class="text-center">
+            <div class="text-3xl md:text-4xl font-bold text-primary">{{ daysRemaining }}</div>
+            <div class="text-sm text-gray">días</div>
+          </div>
+          <div class="text-center">
+            <div class="text-3xl md:text-4xl font-bold text-primary">{{ hoursRemaining }}</div>
+            <div class="text-sm text-gray">horas</div>
+          </div>
+          <div class="text-center">
+            <div class="text-3xl md:text-4xl font-bold text-primary">{{ minutesRemaining }}</div>
+            <div class="text-sm text-gray">minutos</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Detalles del evento -->
+      <section class="grid md:grid-cols-2 gap-6">
+        
+        <div class="flex gap-3 items-start">
+          <div class="text-2xl">📅</div>
+          <div>
+            <h4 class="font-semibold text-dark">Cuándo</h4>
+            <p class="text-gray">{{ formatEventDate() }}</p>
+            <p class="text-gray text-sm">{{ formatEventTime() }}</p>
+          </div>
+        </div>
+
+        <div *ngIf="invitation?.location" class="flex gap-3 items-start">
+          <div class="text-2xl">📍</div>
+          <div>
+            <h4 class="font-semibold text-dark">Dónde</h4>
+            <p class="text-gray">{{ invitation?.location }}</p>
+            <p *ngIf="invitation?.address" class="text-gray text-sm">{{ invitation?.address }}</p>
+          </div>
+        </div>
+
+        <div *ngIf="invitation?.phoneNumber" class="flex gap-3 items-start">
+          <div class="text-2xl">📞</div>
+          <div>
+            <h4 class="font-semibold text-dark">Confirmaciones</h4>
+            <p class="text-gray">{{ invitation?.phoneNumber }}</p>
+          </div>
+        </div>
+
+        <!-- Google Calendar (próximamente) -->
+        <div class="flex gap-3 items-start">
+          <div class="text-2xl">📆</div>
+          <div>
+            <h4 class="font-semibold text-dark">Agendar</h4>
+            <p class="text-gray text-sm">Google Calendar (próximamente)</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Botones de acción -->
+      <section class="flex flex-wrap gap-4 justify-center pt-4">
+        <button class="btn btn-primary" (click)="shareInvitation()">
+          📤 Compartir Invitación
+        </button>
+        <button class="btn btn-success" *ngIf="invitation?.phoneNumber">
+          ✅ Confirmar Asistencia
+        </button>
+      </section>
+
     </div>
-  </ng-container>
+  </article>
 
-  <!-- Contenido principal -->
-  <div class="invitation-content" *ngIf="invitation; else loadingTemplate">
-    <!-- Header con título -->
-    <header class="invitation-header">
-      <h1 class="main-title">¡Estás invitado!</h1>
-      <div class="guest-of-honor">
-        <h2>{{ invitation.guestOfHonor }}</h2>
-        <p class="invitation-text">te invita a su {{ getEventTypeText() }}</p>
-      </div>
-    </header>
-
-    <!-- Countdown -->
-    <section class="countdown-section">
-      <h3>Faltan...</h3>
-      <div class="countdown-timer">
-        <div class="time-unit">
-          <span class="time-number">{{ daysRemaining }}</span>
-          <span class="time-label">días</span>
-        </div>
-        <div class="time-unit">
-          <span class="time-number">{{ hoursRemaining }}</span>
-          <span class="time-label">horas</span>
-        </div>
-        <div class="time-unit">
-          <span class="time-number">{{ minutesRemaining }}</span>
-          <span class="time-label">minutos</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- Detalles del evento -->
-    <section class="event-details">
-      <div class="detail-card">
-        <div class="detail-icon">📅</div>
-        <div class="detail-content">
-          <h4>Cuándo</h4>
-          <p>{{ formatEventDate() }}</p>
-          <p class="event-time">{{ formatEventTime() }}</p>
-        </div>
-      </div>
-
-      <div class="detail-card" *ngIf="invitation.location">
-        <div class="detail-icon">📍</div>
-        <div class="detail-content">
-          <h4>Dónde</h4>
-          <p>{{ invitation.location }}</p>
-          <p class="event-address" *ngIf="invitation.address">
-            {{ invitation.address }}
-          </p>
-        </div>
-      </div>
-
-      <div class="detail-card" *ngIf="invitation.phoneNumber">
-        <div class="detail-icon">📞</div>
-        <div class="detail-content">
-          <h4>Confirmaciones</h4>
-          <p>{{ invitation.phoneNumber }}</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Acciones -->
-    <section class="action-buttons">
-      <button class="btn btn-primary" (click)="shareInvitation()">
-        📤 Compartir Invitación
-      </button>
-      <button class="btn btn-secondary" *ngIf="invitation.phoneNumber">
-        ✅ Confirmar Asistencia
-      </button>
-    </section>
+  <!-- Animaciones (opcionales, solo si se eligen) -->
+  <div *ngIf="invitation?.animationStyle === 'balloons'" class="fixed inset-0 pointer-events-none">
+    <div class="balloon balloon-1 absolute bottom-0 left-1/4 text-4xl animate-float">🎈</div>
+    <div class="balloon balloon-2 absolute bottom-0 left-2/4 text-3xl animate-float-delayed">🎈</div>
+    <div class="balloon balloon-3 absolute bottom-0 left-3/4 text-5xl animate-float-slow">🎈</div>
   </div>
 
-  <!-- Template de carga -->
-  <ng-template #loadingTemplate>
-    <div class="loading-content">
-      <div class="loading-spinner">🎊</div>
-      <p>Cargando invitación...</p>
-    </div>
-  </ng-template>
-
-  <!-- Animaciones CSS -->
-  <div
-    class="animation-balloons"
-    *ngIf="invitation?.animationStyle === 'balloons'"
-  >
-    <div class="balloon balloon-1">🎈</div>
-    <div class="balloon balloon-2">🎈</div>
-    <div class="balloon balloon-3">🎈</div>
-    <div class="balloon balloon-4">🎈</div>
-  </div>
-
-  <div
-    class="animation-confetti"
-    *ngIf="invitation?.animationStyle === 'confetti'"
-  >
-    <div class="confetti"></div>
-    <div class="confetti"></div>
-    <div class="confetti"></div>
-    <div class="confetti"></div>
-    <div class="confetti"></div>
+  <div *ngIf="invitation?.animationStyle === 'confetti'" class="fixed inset-0 pointer-events-none">
+    <div class="confetti absolute w-2 h-4 bg-primary animate-confetti" style="left: 10%; animation-delay: 0s"></div>
+    <div class="confetti absolute w-2 h-4 bg-secondary animate-confetti" style="left: 30%; animation-delay: 0.5s"></div>
+    <div class="confetti absolute w-2 h-4 bg-accent animate-confetti" style="left: 60%; animation-delay: 1s"></div>
+    <div class="confetti absolute w-2 h-4 bg-success animate-confetti" style="left: 80%; animation-delay: 0.2s"></div>
   </div>
 </div>
+
+<!-- Template de carga -->
+<ng-template #loadingTemplate>
+  <div class="min-h-screen flex items-center justify-center">
+    <div class="text-center space-y-4">
+      <div class="text-5xl animate-bounce">🎊</div>
+      <p class="text-gray">Cargando invitación...</p>
+    </div>
+  </div>
+</ng-template>
