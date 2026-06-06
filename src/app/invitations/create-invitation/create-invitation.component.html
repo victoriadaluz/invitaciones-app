@@ -17,17 +17,17 @@
           formControlName="guestOfHonor"
           placeholder="Ej: María, Juan"
           class="form-input"
-          [class.input-error]="guestOfHonor?.invalid && guestOfHonor?.touched"
+          [class.input-error]="guestOfHonor!.invalid && guestOfHonor!.touched"
         />
 
         <div
-          *ngIf="guestOfHonor?.invalid && guestOfHonor?.touched"
+          *ngIf="guestOfHonor!.invalid && guestOfHonor!.touched"
           class="error-message"
         >
-          <div *ngIf="guestOfHonor?.errors?.['required']">
+          <div *ngIf="guestOfHonor!.errors?.['required']">
             👤 El nombre es requerido
           </div>
-          <div *ngIf="guestOfHonor?.errors?.['minlength']">
+          <div *ngIf="guestOfHonor!.errors?.['minlength']">
             👤 Mínimo 2 caracteres
           </div>
         </div>
@@ -51,11 +51,11 @@
           id="eventDate"
           formControlName="eventDate"
           class="form-input"
-          [class.input-error]="eventDate?.invalid && eventDate?.touched"
+          [class.input-error]="eventDate!.invalid && eventDate!.touched"
         />
 
         <div
-          *ngIf="eventDate?.invalid && eventDate?.touched"
+          *ngIf="eventDate!.invalid && eventDate!.touched"
           class="error-message"
         >
           📅 La fecha es requerida

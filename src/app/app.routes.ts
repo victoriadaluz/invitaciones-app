@@ -15,7 +15,6 @@ export const routes: Routes = [
   { path: 'create-invitation', component: CreateInvitationComponent },
   { path: 'invitation/preview', component: ViewInvitationComponent },
   { path: 'invitation/:id', component: ViewInvitationComponent },
-  
   // Redirecciones
   { path: '**', redirectTo: '' }
 ];

@@ -76,7 +76,7 @@ export class InvitationService {
     return null;
   }
 
-  // Obtener invitaciones del usuario
+  // Obtener invitaciones
   async getUserInvitations(): Promise<Invitation[]> {
     const user = this.auth.currentUser;
     if (!user) return [];
