@@ -1,5 +1,5 @@
 // src/app/invitations/services/invitation.service.ts
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   Firestore,
   collection,
@@ -22,9 +22,11 @@ import { Auth } from '@angular/fire/auth';
 import { Invitation } from '../../invitations/interfaces/invitation.interface';
 @Injectable({ providedIn: 'root' })
 export class InvitationService {
-  private firestore = inject(Firestore);
-  private storage = inject(Storage);
-  private auth = inject(Auth);
+  constructor(
+    private firestore: Firestore,
+    private storage: Storage,
+    private auth: Auth,
+  ) {}
 
   // Subir imagen a Storage y obtener URL
   async uploadImage(file: File, invitationId: string): Promise<string> {

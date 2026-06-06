@@ -3,6 +3,14 @@
     <h1>🎊 Creá tu invitación</h1>
     <p class="subtitle">Diseñá una invitación única para tu evento especial</p>
 
+    <!-- Mensajes de estado -->
+    <div *ngIf="errorMessage" class="alert alert-error">
+      {{ errorMessage }}
+    </div>
+    <div *ngIf="successMessage" class="alert alert-success">
+      {{ successMessage }}
+    </div>
+
     <form
       [formGroup]="invitationForm"
       (ngSubmit)="onSubmit()"
@@ -147,12 +155,18 @@
           />
           <label for="backgroundImage" class="file-label">
             <span class="file-icon">📷</span>
-            <span class="file-text">Elegí una imagen</span>
+            <span class="file-text">{{ selectedFileName || 'Elegí una imagen' }}</span>
           </label>
         </div>
         <p class="file-hint">
           Recomendado: imagen horizontal para mejor visualización
         </p>
+        
+        <!-- Preview de la imagen -->
+        <div *ngIf="imagePreview" class="image-preview-container">
+          <img [src]="imagePreview" alt="Preview" class="image-preview" />
+          <p class="preview-text">✅ Imagen seleccionada</p>
+        </div>
       </div>
 
       <!-- Estilo de Animación -->

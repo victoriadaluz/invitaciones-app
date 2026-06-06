@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { Auth } from '@angular/fire/auth';
 
@@ -6,8 +6,10 @@ import { Auth } from '@angular/fire/auth';
   providedIn: 'root'
 })
 export class NoAuthGuard implements CanActivate {
-  private auth = inject(Auth);
-  private router = inject(Router);
+  constructor(
+    private auth: Auth,
+    private router: Router,
+  ) {}
 
   canActivate(): boolean {
     if (!this.auth.currentUser) {

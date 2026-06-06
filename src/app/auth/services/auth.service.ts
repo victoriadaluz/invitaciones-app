@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Auth } from '@angular/fire/auth';
 import { 
@@ -12,10 +12,10 @@ import {
   providedIn: 'root'
 })
 export class AuthService {
-  private auth = inject(Auth);
-  private router = inject(Router);
-
-  constructor() {
+  constructor(
+    private auth: Auth,
+    private router: Router,
+  ) {
     // Escuchar cambios de autenticación
     onAuthStateChanged(this.auth, (user) => {
       console.log('Usuario auth state changed:', user?.email);

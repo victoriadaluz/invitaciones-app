@@ -18,6 +18,10 @@ export class CreateInvitationComponent {
   invitationForm: FormGroup;
   loading = false;
   selectedFile: File | null = null;
+  selectedFileName: string = '';
+  imagePreview: string | null = null;
+  errorMessage: string = '';
+  successMessage: string = '';
   eventTypes = [
     { value: EventType.BIRTHDAY, label: 'Cumpleaños' },
     { value: EventType.WEDDING, label: 'Boda' },
@@ -57,27 +61,66 @@ export class CreateInvitationComponent {
 
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
+    if (this.selectedFile) {
+      this.selectedFileName = this.selectedFile.name;
+      // Generar preview de imagen
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.imagePreview = e.target?.result as string;
+      };
+      reader.readAsDataURL(this.selectedFile);
+    }
   }
 
   async onSubmit() {
-    if (this.invitationForm.invalid) return;
+    if (this.invitationForm.invalid) {
+      this.errorMessage = '❌ Por favor completa todos los campos requeridos';
+      return;
+    }
+    if (!this.validateTimeRange()) {
+      this.errorMessage = '❌ La hora de fin debe ser después de la de inicio';
+      return;
+    }
+
     this.loading = true;
+    this.errorMessage = '';
+    this.successMessage = '';
 
     try {
+      console.log('Creando invitación...');
       // 1. Crear invitación sin imagen
       const invitationId = await this.invitationService.createInvitation(this.invitationForm.value);
+      console.log('Invitación creada con ID:', invitationId);
 
-      // 2. Si hay imagen, subirla y actualizar URL
+      // 2. Si hay imagen, intentar subirla y actualizar URL pero NO bloquear la navegación si falla
       if (this.selectedFile) {
-        const imageUrl = await this.invitationService.uploadImage(this.selectedFile, invitationId);
-        await this.invitationService.updateImageUrl(invitationId, imageUrl);
+        try {
+          console.log('Subiendo imagen:', this.selectedFileName);
+          const imageUrl = await this.invitationService.uploadImage(this.selectedFile, invitationId);
+          console.log('Imagen subida:', imageUrl);
+          await this.invitationService.updateImageUrl(invitationId, imageUrl);
+          console.log('URL de imagen actualizada');
+        } catch (imgErr) {
+          console.error('Error subiendo imagen (no bloqueante):', imgErr);
+          // Mostrar advertencia pero continuar
+          this.errorMessage = '⚠️ La invitación se creó pero falló la subida de la imagen.';
+        }
       }
 
-      // 3. Redirigir a la vista de la invitación
-      this.router.navigate(['/invitation', invitationId]);
-    } catch (error) {
-      console.error(error);
-      alert('Error al crear la invitación');
+      this.successMessage = '✅ ¡Invitación creada exitosamente!';
+      console.log('Intentando redirigir a /invitation/', invitationId);
+      // 3. Redirigir a la vista de la invitación (intento inmediato)
+      try {
+        await this.router.navigate(['/invitation', invitationId]);
+        console.log('Navegación realizada');
+      } catch (navErr) {
+        console.error('Error en navegación:', navErr);
+        // Como fallback, intentar de nuevo después de breve espera
+        setTimeout(() => this.router.navigate(['/invitation', invitationId]), 500);
+      }
+    } catch (error: any) {
+      console.error('Error completo:', error);
+      this.errorMessage = `❌ Error: ${error?.message || 'Algo salió mal'}`;
     } finally {
       this.loading = false;
     }
