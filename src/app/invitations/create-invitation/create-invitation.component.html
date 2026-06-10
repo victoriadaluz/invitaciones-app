@@ -188,10 +188,11 @@
       <button
         type="submit"
         class="submit-btn"
-        [disabled]="invitationForm.invalid || !validateTimeRange()"
+        [disabled]="loading || invitationForm.invalid || !validateTimeRange()"
+        [attr.aria-busy]="loading"
       >
         <span class="btn-icon">✨</span>
-        Crear Invitación
+        {{ loading ? 'Creando...' : 'Crear Invitación' }}
       </button>
     </form>
 

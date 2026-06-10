@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -14,11 +14,11 @@ import { AuthService } from '../../services/auth.service';
 export class RegisterComponent {
   registerForm: FormGroup;
   loading = false;
+  errorMessage = '';
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
   ) {
     this.registerForm = this.fb.group({
       displayName: ['', [Validators.required, Validators.minLength(2)]],
@@ -28,6 +28,12 @@ export class RegisterComponent {
     });
   }
 async onSubmit() {
+  if (this.loading) {
+    return;
+  }
+
+  this.errorMessage = '';
+
   if (this.registerForm.valid && this.passwordsMatch()) {
     this.loading = true;
     
@@ -41,10 +47,11 @@ async onSubmit() {
     this.loading = false;
 
     if (!result.success) {
-      // TEMPORAL: Redirigir igual aunque falle
-      this.router.navigate(['/create-invitation']);
+      this.errorMessage = result.error;
     }
     // Si es success, ya redirige a create-invitation
+  } else {
+    this.registerForm.markAllAsTouched();
   }
 }
 

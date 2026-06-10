@@ -2,10 +2,11 @@ import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore/lite';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { environment } from '../environments/environment';
 import { routes } from './app.routes';
+
 
 export const appConfig: ApplicationConfig = {
   providers: [

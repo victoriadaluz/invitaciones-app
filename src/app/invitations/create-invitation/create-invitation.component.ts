@@ -73,7 +73,12 @@ export class CreateInvitationComponent {
   }
 
   async onSubmit() {
+    if (this.loading) {
+      return;
+    }
+
     if (this.invitationForm.invalid) {
+      this.invitationForm.markAllAsTouched();
       this.errorMessage = '❌ Por favor completa todos los campos requeridos';
       return;
     }
@@ -111,8 +116,14 @@ export class CreateInvitationComponent {
       console.log('Intentando redirigir a /invitation/', invitationId);
       // 3. Redirigir a la vista de la invitación (intento inmediato)
       try {
-        await this.router.navigate(['/invitation', invitationId]);
-        console.log('Navegación realizada');
+        const navigationResult = await this.router.navigate(['/invitation', invitationId]);
+        console.log('Navegación resultado:', navigationResult);
+        if (!navigationResult) {
+          console.warn('La navegación fue rechazada o no se realizó. Intentando de nuevo.');
+          setTimeout(() => this.router.navigate(['/invitation', invitationId]), 500);
+        } else {
+          console.log('Navegación realizada');
+        }
       } catch (navErr) {
         console.error('Error en navegación:', navErr);
         // Como fallback, intentar de nuevo después de breve espera

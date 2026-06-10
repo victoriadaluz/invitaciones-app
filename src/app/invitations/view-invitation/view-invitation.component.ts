@@ -18,23 +18,35 @@ export class ViewInvitationComponent implements OnInit, OnDestroy {
   daysRemaining: number = 0;
   hoursRemaining: number = 0;
   minutesRemaining: number = 0;
+  loadError: string | null = null;
   private countdownInterval: any;
 
-
-  constructor(private route: ActivatedRoute,
-    private invitationService: InvitationService
+  constructor(
+    private route: ActivatedRoute,
+    private invitationService: InvitationService,
   ) {}
 
   async ngOnInit() {
-    // TEMPORAL: datos de ejemplo
-     const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
+    const id = this.route.snapshot.paramMap.get('id');
+    console.log('ViewInvitationComponent: route id', id);
+    if (!id) {
+      this.loadError = 'ID de invitación no encontrado en la ruta.';
+      console.error(this.loadError);
+      return;
+    }
+
+    try {
       this.invitation = await this.invitationService.getInvitationById(id);
       if (this.invitation) {
+        console.log('ViewInvitationComponent: invitación encontrada', this.invitation);
         this.startCountdown();
       } else {
-        console.error('Invitación no encontrada');
+        this.loadError = 'Invitación no encontrada.';
+        console.error(this.loadError);
       }
+    } catch (err) {
+      this.loadError = 'Error al cargar la invitación. Revisa la consola.';
+      console.error('ViewInvitationComponent: error al obtener invitación', err);
     }
   }
 
