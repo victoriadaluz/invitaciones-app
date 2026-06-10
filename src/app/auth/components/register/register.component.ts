@@ -47,7 +47,7 @@ async onSubmit() {
     this.loading = false;
 
     if (!result.success) {
-      this.errorMessage = result.error;
+      this.errorMessage = result.error || 'No se pudo crear la cuenta.';
     }
     // Si es success, ya redirige a create-invitation
   } else {

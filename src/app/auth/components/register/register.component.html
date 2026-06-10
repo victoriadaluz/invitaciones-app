@@ -1,7 +1,11 @@
-<div class="register-container">
+1<div class="register-container">
   <div class="register-card">
     <h2>Creá tu cuenta</h2>
     <p class="subtitle">Unite para crear invitaciones increíbles</p>
+
+    <div *ngIf="errorMessage" class="error" role="alert">
+      {{ errorMessage }}
+    </div>
     
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form" [class.loading]="loading">
       <div class="form-group">
